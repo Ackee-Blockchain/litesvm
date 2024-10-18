@@ -294,7 +294,7 @@ impl LiteSVM {
     }
 
     /// Adds a builtin program to the test environment.
-    pub fn add_builtin(&mut self, program_id: Pubkey, entrypoint: BuiltinFunctionWithContext) {
+    pub fn add_builtin(&mut self, program_id: Pubkey, program_name: &str, entrypoint: BuiltinFunctionWithContext) {
         let builtin = LoadedProgram::new_builtin(
             self.accounts
                 .sysvar_cache
@@ -308,9 +308,7 @@ impl LiteSVM {
         self.accounts
             .programs_cache
             .replenish(program_id, Arc::new(builtin));
-        self.accounts
-            .add_account(program_id, AccountSharedData::new(0, 1, &bpf_loader::id()))
-            .unwrap();
+        self.accounts.add_builtin_account(program_id, native_loader::create_loadable_account_for_test(program_name));
     }
 
     /// Adds an SBF program to the test environment from the file specified.
