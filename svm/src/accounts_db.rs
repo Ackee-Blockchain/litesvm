@@ -59,9 +59,9 @@ where
 }
 
 #[derive(Default)]
-pub(crate) struct AccountsDb {
-    inner: HashMap<Pubkey, AccountSharedData>,
-    pub(crate) programs_cache: ProgramCacheForTxBatch,
+pub struct AccountsDb {
+    pub inner: HashMap<Pubkey, AccountSharedData>,
+    pub programs_cache: ProgramCacheForTxBatch,
     pub(crate) sysvar_cache: SysvarCache,
 }
 
@@ -72,7 +72,7 @@ impl AccountsDb {
 
     /// We should only use this when we know we're not touching any executable or sysvar accounts,
     /// or have already handled such cases.
-    pub(crate) fn add_account_no_checks(&mut self, pubkey: Pubkey, account: AccountSharedData) {
+    pub fn add_account_no_checks(&mut self, pubkey: Pubkey, account: AccountSharedData) {
         self.inner.insert(pubkey, account);
     }
 
@@ -214,7 +214,7 @@ impl AccountsDb {
         Ok(())
     }
 
-    fn load_program(
+    pub fn load_program(
         &self,
         program_account: &AccountSharedData,
     ) -> Result<ProgramCacheEntry, InstructionError> {

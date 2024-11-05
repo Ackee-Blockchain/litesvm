@@ -83,7 +83,7 @@ mod utils;
 pub struct ReadmeDoctests;
 
 pub struct LiteSVM {
-    accounts: AccountsDb,
+    pub accounts: AccountsDb,
     airdrop_kp: Keypair,
     feature_set: Arc<FeatureSet>,
     latest_blockhash: Hash,
@@ -124,6 +124,10 @@ impl LiteSVM {
             .with_spl_programs()
             .with_sigverify(true)
             .with_blockhash_check(true)
+    }
+
+    pub fn signer_pubkey(&self) -> Pubkey {
+        self.airdrop_kp.pubkey()
     }
 
     /// Sets the compute budget.
